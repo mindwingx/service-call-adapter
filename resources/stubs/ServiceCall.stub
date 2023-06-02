@@ -1,0 +1,32 @@
+<?php
+
+namespace {{dummyNamespace}}\{{dummyService}};
+
+use GuzzleHttp\Exception\GuzzleException;
+use Mindwingx\ServiceCallAdapter\handlers\ServiceCallHandler;
+use Mindwingx\ServiceCallAdapter\helpers\Http;
+use Psr\Http\Message\ResponseInterface;
+
+class {{dummyService}}ServiceCall extends ServiceCallHandler
+{
+
+    public function preparePayload(array $payload = []): self
+    {
+        //todo: set service call details
+        $this->setUrl('https://randomuser.me/api')
+            ->setQuery()
+            ->setHeaders()
+            ->setBody($payload);
+
+        return $this;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function getResult(): ResponseInterface|array
+    {
+        return $this->sendRequest(Http::GET)
+                    ->getArrayResponse();
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "name": "mindwingx/service-call-adapter",
+    "description": "Laravel package designed to simplify the integration and communication with various microservices and third-party services.",
+    "authors": [
+        {
+            "name": "Milad Roudgarian",
+            "email": "mindwingx@gmail.com"
+        }
+    ],
+    "keywords": [
+        "Laravel",
+        "Microservices",
+        "Service Call",
+        "Service Call Adapter"
+    ],
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "7.7"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0|^5.0|^6.0",
+        "mockery/mockery": "1.6.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mindwingx\\ServiceCallAdapter\\": "src/",
+            "Mindwingx\\ServiceCallAdapter\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mindwingx\\ServiceCallAdapter\\ServiceCallServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit ./tests/*.php"
+    }
+}
