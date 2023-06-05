@@ -1,13 +1,13 @@
 # Service Call Adapter
 
-The Service Call Adapter is a Laravel package designed to simplify the integration and communication with various
-microservices and third-party services.
+The Service Call Adapter is a Laravel package designed to simplify the integration and communication with various microservices and third-party services.
 
 ### Features
 
-Generate new service calls with a simple command: php artisan sc:new <your-service-name>
-Generated service calls are accessible in the app/ServiceCalls directory
-Easily set up and configure your services
+- Generate new service calls with a simple command
+- Easily set up and configure your services
+- Allocate multiple services by customized condition
+- Generated service calls are easy to access in the app/ServiceCalls directory
 
 ### Installation
 
@@ -25,39 +25,33 @@ Easily set up and configure your services
     php artisan sc:new <your-service-name>
 ```
 
-- To call (the microservices or third-parties) endpoint(service-call), use as the below. 
-
-Note: You have to exactly use the service name of creating after `handle()` method.
+- To call the microservices or third-party endpoints, you can use the generated service calls. For example:
 
 ```php
-<?php
-
-namespace App\DummyNamespace;
-
 use Mindwingx\ServiceCallAdapter\ServiceCall;
 
-class DummyClass
-{
-    public function DummyMethod()
-    {
-        try {
-            $response = ServiceCall::handle()->yourServiceName(["dummy-payload"]);
-        }catch (\Exception $exception){
-            return $exception->getMessage();
-        }
-
-        return $response;
-    }
+try {
+    $response = ServiceCall::handle()->yourServiceName(["dummy-payload"]);
+} catch (\Exception $exception) {
+    return $exception->getMessage();
 }
+
+return $response;
+
 ```
+
+** Note: You have to strictly use the service name of creating after the `handle()` method.
+
+** Customize and configure your services according to your specific needs.
 
 ### Documentation
 
-To prepare needed data/payload for requests, put them into the `array` in the `yourServiceName` method as above. 
-It will be passed through them in related service `ServiceAdapter` and then selected `ServiceCall` class.
+To prepare the needed data/payload for requests, pass them as an array in the `yourServiceName` method. The payload will be passed to the related service via the `ServiceAdapter` and `ServiceCall` classes.
 
 ##### Service Adapter Class example
-- If there are different services with the same purpose, create multiple `ServiceCall` classes instances and handle the in the related ServiceAdapter class Constructor. 
+
+- You can create multiple instances of the `ServiceCall` class in the related `ServiceAdapter` class if you have different services with the same purpose. Handle them in the constructor of the ServiceAdapter class based on your conditions.
+
 ```php
 class DummyServiceAdapter implements ServiceCallAdapterInterface
 {
@@ -70,7 +64,7 @@ class DummyServiceAdapter implements ServiceCallAdapterInterface
     {
         /*
          * Note: you make multiple Service Call Classes and handle them here to
-         * access by related condition or etc.
+         * access by the related condition, etc.
          */
 
         $this->service = new FirstServiceCall();
@@ -90,7 +84,7 @@ class DummyServiceAdapter implements ServiceCallAdapterInterface
 
 ##### Service Call Class example
 
-- The GuzzleHttp is used as the http driver. In `getResult()` method, it returns the request response as `array`. You can replace `getArrayResponse()` with `getResponse()` to get default Guzzle response.
+- The GuzzleHttp is used as the HTTP driver. In the `getResult()` method, it returns the request-response as an `array`. You can replace `getArrayResponse()` with `getResponse()` to get the default Guzzle response.
 
 ```php
 class FirstServiceCall extends ServiceCallHandler
@@ -119,30 +113,6 @@ class FirstServiceCall extends ServiceCallHandler
 ```
 
 - The generated service call will be available in the app/ServiceCalls directory.
-
-```
-       app
-        |
-        |____ ServiceCalls
-        |           |
-        |           |____ firstService
-        |           |         |
-        |           |         |____ ServiceAdapter
-        |           |         |
-        |           |         |____ FirstServiceCall
-        |           |         |
-        |           |         |____ SecondServiceCall
-        |           |         |
-        |           |         |.....
-        |           |
-        |           |____ secondService
-        |
-        |
-        |.....    
-
-```
-
-- Customize and configure your services according to your specific needs.
 
 ### Contributing
 
