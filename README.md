@@ -14,7 +14,7 @@ The Service Call Adapter is a Laravel package designed to simplify the integrati
 - You can install the Service Call Adapter package via Composer:
 
 ```
-    composer require mindwingx/service-call-adapter
+composer require mindwingx/service-call-adapter
 ```
 
 ### Usage
@@ -22,7 +22,7 @@ The Service Call Adapter is a Laravel package designed to simplify the integrati
 - Generate a new service call using the following command:
 
 ```
-    php artisan sc:new <your-service-name>
+php artisan sc:new <your-service-name>
 ```
 
 - To call the microservices or third-party endpoints, you can use the generated service calls. For example:
