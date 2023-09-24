@@ -7,13 +7,13 @@ The Service Call Adapter is a Laravel package designed to simplify the integrati
 - Generate new service calls with a simple command
 - Easily set up and configure your services
 - Allocate multiple services by customized condition
-- Generated service calls are easy to access in the app/ServiceCalls directory
+- Generated service calls are easy to access in the `app/ServiceCalls` directory
 
 ### Installation
 
 - You can install the Service Call Adapter package via Composer:
 
-```
+```composer log
 composer require mindwingx/service-call-adapter
 ```
 
@@ -21,7 +21,7 @@ composer require mindwingx/service-call-adapter
 
 - Generate a new service call using the following command:
 
-```
+```php
 php artisan sc:new <your-service-name>
 ```
 
