@@ -5,6 +5,7 @@ namespace Mindwingx\ServiceCallAdapter\drivers;
 use Exception as ExceptionAlias;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Mindwingx\ServiceCallAdapter\helpers\Http;
 use Psr\Http\Message\ResponseInterface;
 
 class HttpClient
@@ -13,22 +14,32 @@ class HttpClient
      * @var Client
      */
     private Client $guzzle;
+
     /**
      * @var string
      */
     private string $url;
+
     /**
      * @var array
      */
     private array $headers;
+
     /**
      * @var array
      */
     private array $body;
+
     /**
      * @var array
      */
     private array $query;
+
+    /**
+     * @var string
+     */
+    private string $method = Http::GET;
+
     /**
      * @var ResponseInterface|null
      */
@@ -39,6 +50,15 @@ class HttpClient
     public function __construct()
     {
         $this->guzzle = new Client();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
     }
 
     /**
@@ -52,6 +72,14 @@ class HttpClient
     }
 
     /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
      * @param array $headers
      * @return $this
      */
@@ -59,6 +87,14 @@ class HttpClient
     {
         $this->headers = $headers;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBody(): array
+    {
+        return $this->body;
     }
 
     /**
@@ -72,6 +108,14 @@ class HttpClient
     }
 
     /**
+     * @return array
+     */
+    public function getQuery(): array
+    {
+        return $this->query;
+    }
+
+    /**
      * @param array $payload
      * @return $this
      */
@@ -82,20 +126,37 @@ class HttpClient
     }
 
     /**
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
      * @param string $method
+     * @return $this
+     */
+    public function setMethod(string $method = Http::GET): self
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
      * @return HttpClient
      * @throws GuzzleException
      */
-    public function sendRequest(string $method): self
+    public function sendRequest(): self
     {
         try {
             $this->response = $this->guzzle->request(
-                $method,
-                $this->url,
+                $this->getMethod(),
+                $this->getUrl(),
                 [
-                    'headers' => $this->headers,
-                    'json' => $this->body,
-                    'query' => $this->query,
+                    'headers' => $this->getHeaders(),
+                    'json' => $this->getBody(),
+                    'query' => $this->getQuery(),
                 ]
             );
         } catch (ExceptionAlias $exception) {

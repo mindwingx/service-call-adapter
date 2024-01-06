@@ -94,6 +94,7 @@ class FirstServiceCall extends ServiceCallHandler
     {
         //todo: set service call details
         $this->setUrl('https://service-url.io/api')
+             ->setMethod() //  default: GET
              ->setQuery([])
              ->setHeaders([])
              ->setBody($payload);
@@ -106,7 +107,7 @@ class FirstServiceCall extends ServiceCallHandler
      */
     public function getResult(): ResponseInterface|array
     {
-        return $this->sendRequest(Http::GET)
+        return $this->sendRequest()
                     ->getArrayResponse();
     }
 }

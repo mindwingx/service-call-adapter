@@ -9,11 +9,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class {{dummyService}}ServiceCall extends ServiceCallHandler
 {
-
     public function preparePayload(array $payload = []): self
     {
         //todo: set service call details
         $this->setUrl('https://randomuser.me/api')
+            ->setMethod() // default: GET
             ->setQuery()
             ->setHeaders()
             ->setBody($payload);
@@ -26,7 +26,7 @@ class {{dummyService}}ServiceCall extends ServiceCallHandler
      */
     public function getResult(): ResponseInterface|array
     {
-        return $this->sendRequest(Http::GET)
+        return $this->sendRequest()
                     ->getArrayResponse();
     }
 }
