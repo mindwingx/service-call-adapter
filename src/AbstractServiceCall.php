@@ -40,7 +40,8 @@ class AbstractServiceCall
 
             if (class_exists($serviceInstance)) {
                 $service = new $serviceInstance();
-                return $service->call($arguments[0]);
+                $arg = (count($arguments) > 0) ? $arguments[0] : [];
+                return $service->call($arg);
             }
         }
 
