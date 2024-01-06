@@ -2,9 +2,8 @@
 
 namespace Mindwingx\ServiceCallAdapter\drivers;
 
-use Exception as ExceptionAlias;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Mindwingx\ServiceCallAdapter\helpers\Http;
 use Psr\Http\Message\ResponseInterface;
 
@@ -45,7 +44,10 @@ class HttpClient
      */
     private ?ResponseInterface $response;
 
-    private $exception;
+    /**
+     * @var RequestException
+     */
+    private RequestException $exception;
 
     public function __construct()
     {
@@ -145,7 +147,7 @@ class HttpClient
 
     /**
      * @return HttpClient
-     * @throws GuzzleException
+     * @throws RequestException
      */
     public function sendRequest(): self
     {
@@ -159,7 +161,7 @@ class HttpClient
                     'query' => $this->getQuery(),
                 ]
             );
-        } catch (ExceptionAlias $exception) {
+        } catch (RequestException $exception) {
             $this->exception = $exception;
         }
 
@@ -180,16 +182,22 @@ class HttpClient
     public function getArrayResponse(): array
     {
         $response = [
-            'status' => $this->response->getStatusCode(),
-            'body' => json_decode($this->response->getBody()->getContents(), true),
+            'status' => null,
+            'body' => null,
             'error' => [],
         ];
 
-        if ($this->exception instanceof ExceptionAlias) {
-            $response['error'] = [
-                'code' => $this->exception->getCode(),
-                'message' => $this->exception->getMessage(),
-                'trace' => $this->exception->getTraceAsString(),
+        if ($this->response instanceof ResponseInterface) {
+            $response = [
+                'status' => $this->response->getStatusCode(),
+                'body' => json_decode($this->response->getBody()->getContents(), true),
+            ];
+        }
+
+        if ($this->exception instanceof RequestException) {
+            $response = [
+                'status' => $this->exception->getCode(),
+                'body' => json_decode($this->exception->getResponse()->getBody()->getContents(), true),
             ];
         }
 
