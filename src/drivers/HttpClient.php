@@ -42,7 +42,7 @@ class HttpClient
     /**
      * @var ResponseInterface|null
      */
-    private ?ResponseInterface $response;
+    private ?ResponseInterface $response = null;
 
     /**
      * @var RequestException
