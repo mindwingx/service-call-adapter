@@ -45,9 +45,9 @@ class HttpClient
     private ?ResponseInterface $response = null;
 
     /**
-     * @var RequestException
+     * @var RequestException|null
      */
-    private RequestException $exception;
+    private ?RequestException $exception = null;
 
     public function __construct()
     {
@@ -187,14 +187,14 @@ class HttpClient
             'error' => [],
         ];
 
-        if ($this->response instanceof ResponseInterface) {
+        if (!is_null($this->response) && $this->response instanceof ResponseInterface) {
             $response = [
                 'status' => $this->response->getStatusCode(),
                 'body' => json_decode($this->response->getBody()->getContents(), true),
             ];
         }
 
-        if ($this->exception instanceof RequestException) {
+        if (!is_null($this->exception) && $this->exception instanceof RequestException) {
             $response = [
                 'status' => $this->exception->getCode(),
                 'body' => json_decode($this->exception->getResponse()->getBody()->getContents(), true),
